@@ -1,0 +1,18 @@
+# Private build notes, not for publication
+NOTES.md
+
+# Raw source data: large, and publicly available at USASpending.gov.
+# Ignore every CSV by default so the raw export can't be committed wherever it sits...
+*.csv
+# ...but keep the small result CSVs in results/ that back the dashboard.
+!results/*.csv
+
+# Zipped downloads (USASpending exports sometimes arrive as .zip)
+*.zip
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
