@@ -8,13 +8,13 @@ An independent analysis of federal defense contract obligations, built to practi
 
 ---
 
-## Purpose of the Project
+## Purpose of Project
 
 Federal contract spend is available o the public, but most people (re: citizens) rarely read past the headline dollar figures. This project takes one agency's full fiscal year and asks four operational questions an average program/strategy team would actually care about: which companies or contractors receive the money, where is the contracted work happening, when obligated funds gets spent, and how the contracts allocate cost risk (i.e. what type of award is it?)
 
 To no ones suprise, a singular thread is present in every analysis.A small number of large awards drives a disproportionate share of dollars, while a large number of small activities drive volume.Separating those two is the analytical POV of the whole project.
 
-## The data
+## The Data
 
 - **Source:** USASpending.gov, Contracts, Department of Defense, Department of the Air Force, FY2025 (full-year CSV file).
 - **Reproduction:** Filter USASpending's Award Search to Contracts -> Department of Defense -> Department of the Air Force -> FY2025 and export the CSV. The raw file is intentionally not committed to this repo (it is large and publicly available at the source). The `sql/` files document exactly how it was loaded and modeled in Snowflake. 
