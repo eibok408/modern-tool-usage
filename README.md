@@ -43,16 +43,15 @@ Real federal data does not arrive clean. Handling that was half the work and is 
 
 ```
 sql/
-  01_load_and_curate.sql        			Load raw CSV, build the curated analytics table, and validate
-  02_contractor_concentration.sql   		Pareto concentration, name normalization, and usage of window functions
-  03_award_trends.sql           			Monthly spend and running total
-  04_geographic_distribution.sql    		Spend by state
-  05_contract_type_mix.sql      			Detailed 13-type pricing breakdown (incentive-fee finding)
-  05b_contract_family_rollup.sql    		3-family risk rollup for the dashboard
+  01_load_and_curate.sql            Load raw CSV, build the curated analytics table, and validate
+  02_contractor_concentration.sql   Pareto concentration, name normalization, window functions
+  03_award_trends.sql               Monthly spend and running total
+  04_geographic_distribution.sql    Spend by state
+  05_contract_type_mix.sql          Full 13-type pricing breakdown plus the 3-family risk rollup for the dashboard
 results/
-  Dashboard screenshot and any exported result CSVs
-LEARNINGS.md                    SQL concepts demonstrated (window functions, execution order, data-quality habits)
-README.md                       This file
+  Dashboard screenshot and exported result CSVs
+LEARNINGS.md                        SQL concepts demonstrated (window functions, execution order, data-quality habits)
+README.md                           This file
 ```
 
 ## Data model (curated table)
