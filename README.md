@@ -12,7 +12,7 @@ An independent analysis of federal defense contract obligations, built to practi
 
 Federal contract spend is available o the public, but most people (re: citizens) rarely read past the headline dollar figures. This project takes one agency's full fiscal year and asks four operational questions an average program/strategy team would actually care about: which companies or contractors receive the money, where is the contracted work happening, when obligated funds gets spent, and how the contracts allocate cost risk (i.e. what type of award is it?)
 
-To no ones suprise, a singular thread is present in every analysis.A small number of large awards drives a disproportionate share of dollars, while a large number of small activities drive volume.Separating those two is the analytical POV of the whole project.
+To no ones surprise, a singular thread is present in every analysis. A small number of large awards drives a disproportionate share of dollars, while a large number of small activities drive volume. Separating those two is the analytical POV of the whole project.
 
 ## The Data
 
@@ -32,10 +32,10 @@ To no ones suprise, a singular thread is present in every analysis.A small numbe
 
 ## Messy data and how I got over
 
-Real federal data does not arrive clean. Handling that was half the work and is the part most worth reading.
+Real federal data does not arrive clean. Everyone is using a different system, and sometimes different tables to manage their data. Handling this data was honestly more than half the work and is the part most worth reading.
 
-- **Multiline CSV fields.** The export contains free-text fields with embedded line breaks, which break a naive load. Handled at load time with `FIELD_OPTIONALLY_ENCLOSED_BY = '"'` and `ON_ERROR = CONTINUE` within the snowflake ingestion UI.
-- **Mislabeled source columns.** 'Trust but verify' is real! The contract-pricing columns are swapped at the source: the field named `TYPE_OF_CONTRACT_PRICING_CODE` holds the readable text ("FIRM FIXED PRICE") while `TYPE_OF_CONTRACT_PRICING` holds the single-letter code ("J"). The contract-type analysis classifies off the correct (text) column, whereas if this was not caught, getting this backward silently routes every row to "unclassified."
+- **Multiline CSV fields.** The export contains free-text fields with embedded line breaks, which break a naive load. I handled this while loading into Snowflake with `FIELD_OPTIONALLY_ENCLOSED_BY = '"'` and `ON_ERROR = CONTINUE` within the snowflake ingestion UI.
+- **Mislabeled source columns.** 'Trust but verify' is real! The contract-pricing columns are swapped at the source: the field named `TYPE_OF_CONTRACT_PRICING_CODE` holds the readable text ("FIRM FIXED PRICE") while `TYPE_OF_CONTRACT_PRICING` holds the single-letter code ("J"). The contract-type analysis classifies off the correct (text) column, whereas if this was not caught, getting this backward silently routes every row to "unclassified." ALWAYS REVIEW YOUR DATA!!
 - **Unstandardized recipient names.** The same company appears under multiple variants (LOCKHEED MARTIN CORPORATION vs LOCKHEED MARTIN CORP). Normalized with `CASE` before ranking, or contractor concentration is understated.
 - **Meaningful nulls.** 8.2% of transactions (8,668) have a null place-of-performance state, representing overseas, foreign military sales, or classified work. The geography analysis is scoped to domestic spend and excludes them explicitly, keeping the percentage denominators honest.
 
@@ -48,9 +48,10 @@ sql/
   03_award_trends.sql               Monthly spend and running total
   04_geographic_distribution.sql    Spend by state
   05_contract_type_mix.sql          Full 13-type pricing breakdown plus the 3-family risk rollup for the dashboard
+
 results/
   Dashboard screenshot and exported result CSVs
-LEARNINGS.md                        SQL concepts demonstrated (window functions, execution order, data-quality habits)
+LEARNINGS.md                        Overview of the SQL concepts demonstrated (window functions, execution order, data-quality habits)
 README.md                           This file
 ```
 
