@@ -1,6 +1,6 @@
 # U.S. Air Force Contract Spending, FY2025
 
-An independent analysis of federal defense contract obligations, built to practice modern data warehousing on real, messy,and domain-relevant data. Raw data loaded and modeled in "Snowflake", four analyses written in"SQL", results visualized in "Tableau Public.
+An independent analysis of federal defense contract obligations, built to practice modern data warehousing on real, messy, and domain-relevant data. Raw data loaded and modeled in "Snowflake", four analyses written in "SQL", results visualized in "Tableau Public.
 
 **Live dashboard:** https://public.tableau.com/app/profile/emem.ibok/viz/AirForceSpendingin2025/Dashboard1
 
@@ -10,9 +10,9 @@ An independent analysis of federal defense contract obligations, built to practi
 
 ## Purpose of Project
 
-Federal contract spend is available to the public, but most people (re: citizens) rarely read past the headline dollar figures. This project takes one agency's full fiscal year and asks four operational questions an average program/strategy team would actually care about: which companies or contractors receive the money, where is the contracted work happening, when obligated funds gets spent, and how the contracts allocate cost risk (i.e. what type of award is it?)
+Federal contract spend is public, but most people (i.e., citizens) rarely read past the headline dollar figures. This project takes one agency's full fiscal year and asks four operational questions an average program/strategy team would actually care about: which companies or contractors receive the money, where the contracted work is happening, when obligated funds get spent, and how the contracts allocate cost risk (i.e., what type of award is it?)
 
-To no ones surprise, a singular thread is present in every analysis. A small number of large awards drives a disproportionate share of dollars, while a large number of small activities drive volume. Separating those two is the analytical POV of the whole project.
+To no one's surprise, a singular thread is present in every analysis. A small number of large awards drives a disproportionate share of dollars, while a large number of small activities drive volume. Separating those two is the analytical POV of the whole project.
 
 ## The Data
 
@@ -22,22 +22,22 @@ To no ones surprise, a singular thread is present in every analysis. A small num
 
 ## Findings
 
-**1. Contractor concentration is high.** Boeing is the single largest recipient of Air Force awards, with an astounding 13.9% of obligated dollars. More importantly, the top five contractors together account for in 40.6%. Award counts separate the primes that win a few very large awards from vendors with many small actions.
+**1. Contractor concentration is high.** Boeing is the single largest recipient of Air Force awards, with an astounding 13.9% of obligated dollars. More importantly, the top five contractors together account for 40.6%. Award counts separate the primes that win a few very large awards from vendors with many small actions.
 
-**2. Air Force spending is steady, but experiences two distinct spikes through the fiscal yearfor two distict reasons.** Monthly obligations sit ~$7B, with a July spike ($12.8B, driven by a handful of large awards at normal transaction volume) and a September spike ($13.7B, driven by roughly double the normal transaction count). September's surge is consistent with fiscal year-end obligation deadlines (use it or lose it). July on the other hand is different, as the volume remained the same, but the size/scope of award activies increased.
+**2. Air Force spending is steady, but experiences two distinct spikes through the fiscal year for two distinct reasons.** Monthly obligations sit ~$7B, with a July spike ($12.8B, driven by a handful of large awards at normal transaction volume) and a September spike ($13.7B, driven by roughly double the normal transaction count). September's surge is consistent with fiscal year-end obligation deadlines (use it or lose it). July, by contrast, is different: volume remained the same, but the size/scope of award activities increased.
 
-**3. Work concentrates geographically, but less sharply than by contractor.** The top five states (CA, TX, VA, FL, CO) account for 46.6% of domestic obligated dollars. This is logical when understanding where  government/space contractor presence is high. The top ten reach 68.4%. Geography is softer than contractor concentration because a single prime spreads work across many states.
+**3. Work concentrates geographically, but less sharply than by contractor.** The top five states (CA, TX, VA, FL, CO) account for 46.6% of domestic obligated dollars. This makes sense given where government/space contractor presence is high. The top ten reach 68.4%. Geography is softer than contractor concentration because a single prime spreads work across many states.
 
-**4. The contract mix is a near-even split between two risk models.** Fixed-price work (58%) places cost-overrun risk on the contractor. When accounting for program overruns (like T-7 or VC-25B), the federal government seems to reign in on "blank check" contracting, ensuring contractors are responsible for appropriately scoping and sticking to the proposed costs to develop or deliver on time and within schedule. Cost-reimbursable work (41%) places it on the government. This type of work tends to be maintenance, modernization, or support of current programs.  Time-and-materials is negligible (1%). A roughly balanced split signals a portfolio spanning mature production programs and uncertain-scope R&D.
+**4. The contract mix is a near-even split between two risk models.** Fixed-price work (58%) places cost-overrun risk on the contractor. When accounting for program overruns (like T-7 or VC-25B), the federal government seems to rein in "blank check" contracting, ensuring contractors are responsible for scoping appropriately and sticking to proposed costs to develop or deliver on time and on schedule. Cost-reimbursable work (41%) places it on the government. This type of work tends to be maintenance, modernization, or support of current programs.  Time-and-materials is negligible (1%). A roughly balanced split signals a portfolio spanning mature production programs and uncertain-scope R&D.
 
 ## Messy data and how I got over
 
-Real federal data does not arrive clean. Everyone is using a different system, and sometimes different tables to manage their data. Handling this data was honestly more than half the work and is the part most worth reading.
+Real federal data does not arrive clean. Everyone uses a different system, and sometimes different tables, to manage their data. Handling this data was honestly more than half the work and is the part most worth reading.
 
-- **Multiline CSV fields.** The export contains free-text fields with embedded line breaks, which break a naive load. I handled this while loading into Snowflake with `FIELD_OPTIONALLY_ENCLOSED_BY = '"'` and `ON_ERROR = CONTINUE` within the snowflake ingestion UI.
-- **Mislabeled source columns.** 'Trust but verify' is real! The contract-pricing columns are swapped at the source: the field named `TYPE_OF_CONTRACT_PRICING_CODE` holds the readable text ("FIRM FIXED PRICE") while `TYPE_OF_CONTRACT_PRICING` holds the single-letter code ("J"). The contract-type analysis classifies off the correct (text) column, whereas if this was not caught, getting this backward silently routes every row to "unclassified." ALWAYS REVIEW YOUR DATA!!
+- **Multiline CSV fields.** The export contains free-text fields with embedded line breaks, which break a naive load. I handled this when loading into Snowflake with `FIELD_OPTIONALLY_ENCLOSED_BY = '"'` and `ON_ERROR = CONTINUE` in the Snowflake ingestion UI.
+- **Mislabeled source columns.** 'Trust but verify' is real! The contract-pricing columns are swapped at the source: the field named `TYPE_OF_CONTRACT_PRICING_CODE` holds the readable text ("FIRM FIXED PRICE") while `TYPE_OF_CONTRACT_PRICING` holds the single-letter code ("J"). The contract-type analysis classifies off the correct (text) column; if this is reversed, it silently routes every row to "unclassified." ALWAYS REVIEW YOUR DATA!!
 - **Unstandardized recipient names.** The same company appears under multiple variants (LOCKHEED MARTIN CORPORATION vs LOCKHEED MARTIN CORP). Normalized with `CASE` before ranking, or contractor concentration is understated.
-- **Meaningful nulls.** 8.2% of transactions (8,668) have a null place-of-performance state, representing overseas, foreign military sales, or classified work. The geography analysis is scoped to domestic spend and excludes them explicitly, keeping the percentage denominators honest.
+- **Meaningful nulls.** 8.2% of transactions (8,668) have a null place-of-performance state, representing overseas, foreign military sales, or classified work. The geography analysis is scoped to domestic spend and explicitly excludes these transactions, keeping the percentage denominators honest.
 
 ## What's in this repo
 
@@ -50,7 +50,7 @@ sql/
   05_contract_type_mix.sql          Full 13-type pricing breakdown plus the 3-family risk rollup for the dashboard
 
 results/
-  Dashboard screenshot and exported result CSVs
+Dashboard screenshot and exported result CSVs
 LEARNINGS.md                        Overview of the SQL concepts demonstrated (window functions, execution order, data-quality habits)
 README.md                           This file
 ```
@@ -61,4 +61,4 @@ README.md                           This file
 
 ## Tools
 
-Snowflake (free trial, Snowsight SQL worksheets) for the warehouse and all SQL. Tableau Public for visualization; the free tier is file-based, so each query result was exported as CSV and connected as a text file rather than via a live warehouse connector.
+Snowflake (free trial, Snowsight SQL worksheets) for the warehouse, and Tableau Public for visualization. Please note the free tier is file-based, so each query result was exported as a CSV and connected as a text file rather than via a live warehouse connector.
