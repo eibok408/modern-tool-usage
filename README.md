@@ -10,7 +10,7 @@ An independent analysis of federal defense contract obligations, built to practi
 
 ## Purpose of Project
 
-Federal contract spend is available o the public, but most people (re: citizens) rarely read past the headline dollar figures. This project takes one agency's full fiscal year and asks four operational questions an average program/strategy team would actually care about: which companies or contractors receive the money, where is the contracted work happening, when obligated funds gets spent, and how the contracts allocate cost risk (i.e. what type of award is it?)
+Federal contract spend is available of the public, but most people (re: citizens) rarely read past the headline dollar figures. This project takes one agency's full fiscal year and asks four operational questions an average program/strategy team would actually care about: which companies or contractors receive the money, where is the contracted work happening, when obligated funds gets spent, and how the contracts allocate cost risk (i.e. what type of award is it?)
 
 To no ones surprise, a singular thread is present in every analysis. A small number of large awards drives a disproportionate share of dollars, while a large number of small activities drive volume. Separating those two is the analytical POV of the whole project.
 
